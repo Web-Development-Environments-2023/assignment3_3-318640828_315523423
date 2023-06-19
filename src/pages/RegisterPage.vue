@@ -48,6 +48,7 @@
         label="Password:"
         label-for="password"
       >
+      
         <b-form-input
           id="password"
           type="password"
@@ -70,6 +71,7 @@
           v-if="!$v.form.password.checkSpecialCharAndDigit">
           Have to include special character and digit
         </b-form-invalid-feedback>
+
       </b-form-group>
 
       <b-form-group
@@ -93,6 +95,32 @@
           The confirmed password is not equal to the original password
         </b-form-invalid-feedback>
       </b-form-group>
+
+
+      <b-form-group
+        id="input-group-emailAddress"
+        label-cols-sm="3"
+        label="Email Address:"
+        label-for="emailAddress"
+      >
+        <b-form-input
+          id="emailAddress"
+          type="text"
+          v-model="$v.form.emailAddress.$model"
+          :state="validateState('emailAddress')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.emailAddress.required">
+          Email is required
+        </b-form-invalid-feedback>
+
+        <b-form-invalid-feedback
+          v-else-if="!$v.form.emailAddress.email">
+          Email is Invalid
+        </b-form-invalid-feedback>
+
+      </b-form-group>
+
+
 
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
@@ -145,7 +173,7 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: "",
+        emailAddress: "",
         submitError: undefined
       },
       countries: [{ value: null, text: "", disabled: true }],
@@ -170,12 +198,15 @@ export default {
           const pattern = /^(?=.*\d)(?=.*[^\w\s]).+$/;
           return pattern.test(value);
         }
-
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
-      }
+      },
+      emailAddress:{
+        required,
+        email
+        }
     }
   },
   mounted() {
@@ -223,7 +254,7 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: ""
+        emailAddress: ""
       };
       this.$nextTick(() => {
         this.$v.$reset();
