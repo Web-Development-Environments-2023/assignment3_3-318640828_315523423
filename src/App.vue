@@ -11,6 +11,7 @@
       </span>
       <span v-else>
         {{ $root.store.username }}: <button @click="Logout">Logout</button>|
+
       </span>
     </div>
     <router-view />
