@@ -21,7 +21,7 @@
           Username length should be between 3-8 characters long
         </b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.form.username.alpha">
-          Username alpha
+          Username alphabeth error
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -65,6 +65,10 @@
           v-if="$v.form.password.required && !$v.form.password.length"
         >
           Have length between 5-10 characters long
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-if="!$v.form.password.checkSpecialCharAndDigit">
+          Have to include special character and digit
         </b-form-invalid-feedback>
       </b-form-group>
 
