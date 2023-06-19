@@ -1,26 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
-      </span>
-      <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-
-      </span>
-    </div>
+    <NavBar></NavBar>
+    
     <router-view />
+  
+    <!-- <NavBar></NavBar> -->
   </div>
+
+  
+    
 </template>
 
 <script>
+import NavBar from "./pages/NavBar";
 export default {
   name: "App",
+  components: {NavBar},
   methods: {
     Logout() {
       this.$root.store.logout();
@@ -52,9 +47,25 @@ export default {
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none;
 }
 
 #nav a.router-link-exact-active {
+  color: #b611c5;
+}
+
+.guest-section {
+  font-weight: bold;
+}
+
+.user-section {
+  font-weight: bold;
   color: #42b983;
+}
+
+/* Hover effect */
+#nav a:hover {
+  background-color: #f2f2f2;
+  color: #b611c5;
 }
 </style>
