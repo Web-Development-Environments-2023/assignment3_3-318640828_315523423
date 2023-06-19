@@ -123,13 +123,7 @@
 
 
       <b-button type="reset" variant="danger">Reset</b-button>
-      <b-button
-        type="submit"
-        variant="primary"
-        style="width:250px;"
-        class="ml-5 w-75"
-        >Register</b-button
-      >
+      <b-button type="submit" variant="primary" style="width:250px;" class="ml-5 w-75">Register</b-button>
       <div class="mt-2">
         You have an account already?
         <router-link to="login"> Log in here</router-link>
