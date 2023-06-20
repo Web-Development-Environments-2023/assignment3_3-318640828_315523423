@@ -21,7 +21,7 @@
           Username length should be between 3-8 characters long
         </b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.form.username.alpha">
-          Username alpha
+          Username alphabeth error
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -48,6 +48,7 @@
         label="Password:"
         label-for="password"
       >
+      
         <b-form-input
           id="password"
           type="password"
@@ -66,6 +67,11 @@
         >
           Have length between 5-10 characters long
         </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-if="!$v.form.password.checkSpecialCharAndDigit">
+          Have to include special character and digit
+        </b-form-invalid-feedback>
+
       </b-form-group>
 
       <b-form-group
@@ -90,14 +96,34 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-button type="reset" variant="danger">Reset</b-button>
-      <b-button
-        type="submit"
-        variant="primary"
-        style="width:250px;"
-        class="ml-5 w-75"
-        >Register</b-button
+
+      <b-form-group
+        id="input-group-emailAddress"
+        label-cols-sm="3"
+        label="Email Address:"
+        label-for="emailAddress"
       >
+        <b-form-input
+          id="emailAddress"
+          type="text"
+          v-model="$v.form.emailAddress.$model"
+          :state="validateState('emailAddress')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.emailAddress.required">
+          Email is required
+        </b-form-invalid-feedback>
+
+        <b-form-invalid-feedback
+          v-else-if="!$v.form.emailAddress.email">
+          Email is Invalid
+        </b-form-invalid-feedback>
+
+      </b-form-group>
+
+
+
+      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="submit" variant="primary" style="width:250px;" class="ml-5 w-75">Register</b-button>
       <div class="mt-2">
         You have an account already?
         <router-link to="login"> Log in here</router-link>
@@ -141,7 +167,7 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: "",
+        emailAddress: "",
         submitError: undefined
       },
       countries: [{ value: null, text: "", disabled: true }],
@@ -161,12 +187,20 @@ export default {
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        checkSpecialCharAndDigit(value){
+          const pattern = /^(?=.*\d)(?=.*[^\w\s]).+$/;
+          return pattern.test(value);
+        }
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
-      }
+      },
+      emailAddress:{
+        required,
+        email
+        }
     }
   },
   mounted() {
@@ -214,7 +248,7 @@ export default {
         country: null,
         password: "",
         confirmedPassword: "",
-        email: ""
+        emailAddress: ""
       };
       this.$nextTick(() => {
         this.$v.$reset();

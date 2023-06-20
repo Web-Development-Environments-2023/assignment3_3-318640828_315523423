@@ -1,4 +1,5 @@
 <template>
+
   <div class="container">
     <h1 class="title">Login</h1>
     <b-form @submit.prevent="onLogin">
@@ -93,18 +94,29 @@ export default {
     },
     async Login() {
       try {
-        
         const response = await this.axios.post(
-          // "https://test-for-3-2.herokuapp.com/user/Login",
-          this.$root.store.server_domain +"/Login",
-          // "http://132.72.65.211:80/Login",
-          // "http://132.73.84.100:80/Login",
-
+          this.$root.store.server_domain + "/Login",
           {
             username: this.form.username,
             password: this.form.password
-          }
+          },
+          {withCredentials: true}
+          
         );
+
+
+        // const response = await this.axios.post(
+        //   // "https://test-for-3-2.herokuapp.com/user/Login",
+        //   //this.$root.store.server_domain +"/Login",
+        //   // "http://132.72.65.211:80/Login",
+        //   // "http://132.73.84.100:80/Login",
+        //   "http://localhost:3000/Login",
+          
+        //   {
+        //     username: this.form.username,
+        //     password: this.form.password
+        //   }
+        // );
         // console.log(response);
         // this.$root.loggedIn = true;
         console.log(this.$root.store.login);

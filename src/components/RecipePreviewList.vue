@@ -19,19 +19,25 @@ export default {
   components: {
     RecipePreview
   },
-  props: {
-    title: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      recipes: []
-    };
-  },
+  // props: {
+  //   title: {
+  //     type: String,
+  //     required: true
+  //   }
+  // },
+  // data() {
+  //   return {
+  //     recipes: []
+  //   };
+  // },
   mounted() {
     this.updateRecipes();
+  },
+  props: {
+    recipes: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
     async updateRecipes() {
