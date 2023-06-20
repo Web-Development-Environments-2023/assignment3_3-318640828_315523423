@@ -4,6 +4,7 @@
     </div>
 </template>
 
+
 <script>
 export default {
     data() {
@@ -13,10 +14,8 @@ export default {
         async getFavorites(){
             try{
                 const response = await this.axios.get(
-                    this.$root.store.server_domain +"/users/favoriterecipes",
-                    {
-                        username: this.$root.store.username
-                    }
+                    "http://localhost:3000/users/favorites",
+                    //this.$root.store.server_domain +"/users/favoriterecipes",
                 );
                 console.log(response);
                 this.$root.store.favorites = response.data;
