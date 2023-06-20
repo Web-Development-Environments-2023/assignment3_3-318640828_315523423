@@ -10,7 +10,8 @@
                 </span>
                 <span v-else>
                 {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-                <router-link :to="{ name: 'favorites' }">Favorites</router-link>|
+                <router-link :to="{ name: 'favorites' }">My Favorites</router-link>|
+                <router-link :to="{ name: 'family' }">My Family</router-link>|
                 </span>
             </div>
         

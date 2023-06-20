@@ -1,10 +1,7 @@
 
 <template>
     <div>
-      
-
-        <h2> My Favorites </h2>
-      <button @click="getFavorites">Favorites</button>
+      <h2> My Favorites </h2>
       <ul>
         <p> 
             {{ favorites }}
@@ -26,6 +23,9 @@
     },
     components: {
       RecipePreviewList
+    },
+    mounted() {
+      this.getFavorites();
     },
     methods: {
       async getFavorites() {
