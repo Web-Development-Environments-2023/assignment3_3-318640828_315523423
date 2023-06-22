@@ -15,25 +15,23 @@
 <script>
 import RecipePreview from "./RecipePreview.vue";
 export default {
+  data() {
+    return {
+      recipes_array: []
+    };
+  },
+  mounted() {
+    this.updateRecipes();
+  },
   name: "RecipePreviewList",
   components: {
     RecipePreview
   },
-  // props: {
-  //   title: {
-  //     type: String,
-  //     required: true
-  //   }
-  // },
-  // data() {
-  //   return {
-  //     recipes: []
-  //   };
-  // },
-  mounted() {
-    this.updateRecipes();
-  },
   props: {
+    title: {
+      type: String,
+      required: true
+    },
     recipes: {
       type: Array,
       required: true
@@ -43,7 +41,14 @@ export default {
     async updateRecipes() {
       try {
         const response = await this.axios.get(
-          this.$root.store.server_domain + "/recipes/random",
+          // ths is for testing purposes only - it will be removed later
+          //|
+          //|
+          //|
+          //V
+          this.$root.store.server_domain + "/recipes",
+                  
+          // this.$root.store.server_domain + "/recipes/random",
           // "https://test-for-3-2.herokuapp.com/recipes/random"
         );
 
