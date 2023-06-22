@@ -12,8 +12,9 @@
         <span class="divider">|</span>
         <router-link :to="{ name: 'search' }" class="nav-link">Search</router-link>
         <span class="divider">|</span>
+        <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+        <span class="divider">|</span>
         <span v-if="!$root.store.username" class="guest-section">
-          Guest:
           <router-link :to="{ name: 'register' }" class="nav-link">Register</router-link>
           <span class="divider">|</span>
           <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
@@ -28,7 +29,10 @@
             </b-dropdown-item>     
             <b-dropdown-item>
               <router-link :to="{ name: 'myRec' }" class="nav-link">My Recipes</router-link>
-            </b-dropdown-item>         
+            </b-dropdown-item>   
+            <b-dropdown-item>
+              <router-link :to="{ name: 'create' }" class="nav-link">Create New Recipe</router-link>
+            </b-dropdown-item>        
           </b-dropdown>
           <button class="logout-button" @click="Logout">Logout</button>
         </span>

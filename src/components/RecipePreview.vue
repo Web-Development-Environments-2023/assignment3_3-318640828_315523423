@@ -3,6 +3,8 @@
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview"
   >
+    <!-- @click="handleTemplatePress(recipe.id)" -->
+  
       <div class="recipe-body">
       <img v-if="image_load && recipe.image" :src="recipe.image" class="recipe-image" />
       <div v-else class="placeholder"></div>
@@ -98,18 +100,11 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f2f2f2;
-}
-
-    /* .recipe-overview li {
-      display: inline-block;
-      margin-right: 10px;
-      color: #777;
-    } */
-    
+}    
     
   </style>
   
-  <script>
+  <!-- <script>
   export default {
     data() {
       return {
@@ -118,9 +113,6 @@ export default {
     },
     mounted() {
       this.image_load = true;
-      // this.axios.get(this.recipe.image).then(() => {
-      //   this.image_load = true;
-      // });
     },
     props: {
       recipe: {
@@ -129,4 +121,4 @@ export default {
       }
     }
   };
-  </script>
+  </script> -->
