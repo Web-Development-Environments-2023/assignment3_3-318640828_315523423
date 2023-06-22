@@ -24,6 +24,41 @@
           Username alphabeth error
         </b-form-invalid-feedback>
       </b-form-group>
+      
+      <b-form-group
+        id="input-group-firstName"
+        label-cols-sm="3"
+        label="First Name:"
+        label-for="firstName"
+      >
+      <b-form-input
+        id="firstName"
+        v-model="$v.form.firstName.$model"
+        type="text"
+        :state="validateState('firstName')"
+      ></b-form-input>
+      <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+        First name is required
+      </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-lastName"
+        label-cols-sm="3"
+        label="Last Name:"
+        label-for="lastName"
+      >
+        <b-form-input
+          id="lastName"
+          v-model="$v.form.lastName.$model"
+          type="text"
+          :state="validateState('lastName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+          Last name is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+
 
       <b-form-group
         id="input-group-country"
@@ -182,6 +217,12 @@ export default {
         length: (u) => minLength(3)(u) && maxLength(8)(u),
         alpha
       },
+      firstName: {
+      required
+      },
+      lastName: {
+        required
+      },
       country: {
         required
       },
@@ -221,6 +262,8 @@ export default {
 
           {
             username: this.form.username,
+            firstName: this.form.firstName,
+            lastName: this.form.lastName,
             password: this.form.password
           }
         );
