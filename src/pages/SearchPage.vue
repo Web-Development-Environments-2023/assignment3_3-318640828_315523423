@@ -5,12 +5,22 @@
       <b-input-group-prepend is-text>
         <b-icon icon="search"></b-icon>
       </b-input-group-prepend>
-      <b-form-input type="search" placeholder="Search terms"></b-form-input>
+      <div class="search-container">
+        <input type="text" v-model="search" placeholder="Search terms" @keydown.enter="handleSearchQuery">
+        <button @click="handleSearchQuery">Search</button>
+      </div>
     </b-input-group>
 
     <b-button-group class="mt-2">
-      <b-button v-for="term in searchTerms" :key="term" @click="addTermToSearch(term)">{{ term }}</b-button>
+      <!-- <b-button v-for="term in searchTerms" :key="term" @click="addTermToSearch(term)">{{ term }}</b-button> -->
     </b-button-group>
+
+    <!-- Recipe previews -->
+    <RecipePreview v-for="recipe in recipes" :key="recipe.id" :recipe="recipe"></RecipePreview>
+
+    <!-- VueSelect component -->
+    <VueSelect v-model="selectedCuisine" :options="cuisine_array" label="Select Cuisine" multiple></VueSelect>
+
   </div>
 </template>
 
@@ -27,6 +37,7 @@ export default {
       selected: null,
       numberOfRecipes: 5, 
       searchTerms: [],
+      selectedCuisine: [], // Add selectedCuisine property
       orderBy: 'popularity',
       options: [],
       showResults: false,
@@ -89,21 +100,18 @@ export default {
       ],
       search: '',
       cuisine: [],
-      dietary: [],
-      allergens: [],
+      
     };
   },
   methods: {
     async getRecipes() {
-      try{
+      try {
         const queryArguments = {
-          query: this.searchQuery,
-          number: this.numResults,
+          query: this.search.trim().split(" "),
+          number: this.numberOfRecipes,
           cuisine: this.selectedCuisine.join(","),
-          diet: this.selectedDiet.join(","),
-          intolerances: this.selectedIntolerances.join(",")
         };
-        const response = await axios.get(`${this.$root.store.server_domain}/recipes/search`, { queryArguments });
+        const response = await axios.get(`${this.$root.store.server_domain}/recipes/`, { params: queryArguments });
         this.recipes = response.data;
         if (!(this.recipes.length > 0 && this.recipes[0].title != null)){
           this.recipes = [];
@@ -111,31 +119,84 @@ export default {
         }
         this.showResults = true;
         console.log(this.recipes);
-    }
-    catch (error) {
-      console.log(error);
-    }
-    },
-    
-    addTermToSearch(term) {
-      if (!this.searchTerms.includes(term)) {
-        this.searchTerms.push(term);
+      } catch (error) {
+        console.log(error);
       }
     },
-},
-  // components: {
-  //   RecipePreview,
-  //   VueSelect
-  // },
+    
+    async handleSearchQuery() {
+      try {
+        if (this.search.trim() !== '') {
+          await this.getRecipes();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+    
+    async addTermToSearch(term) {
+      try{
+        if (!this.searchTerms.includes(term)) {
+          this.searchTerms.push(term);
+        }
+      }
+      catch (error) {
+        console.log(error);
+      }
+    },
+
+    // async handleSearchQuery() {
+    //   try {
+    //     {{console.log(this.search)}}
+    //     if (this.search.trim() !== '') {
+    //       this.searchTerms = this.search.trim().split(" ");
+    //       await this.getRecipes();
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+    // handleSearchQuery: async () => {
+    //   try {
+    //     {{console.log(this.search)}}
+    //     if (this.search.trim() !== '') {
+    //       this.searchTerms = this.search.trim().split(" ");
+    //       await this.getRecipes();
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
+
+  validations: {
+    form: {
+      search: {
+        required: true,
+      },
+  }, 
+
+  components: {
+    RecipePreview,
+    VueSelect
+  },
   mounted() {
     this.options = this.cuisine_array.map(cuisine => {
       return { name: cuisine, value: cuisine };
     });
+
+    this.handleSearchQuery = this.handleSearchQuery.bind(this);
   },
   watch: {
     selected: function(val) {
       this.cuisine = val.map(cuisine => cuisine.value).join(',');
+    },
+    search: function(newSearch) {
+    // Call your method to handle the search query here
+    this.handleSearchQuery(newSearch);
     }
+  }
   }
 };
 </script>
