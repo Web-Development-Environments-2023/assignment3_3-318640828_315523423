@@ -1,6 +1,13 @@
 <template>
     <div>
       <div id="nav">
+        <span v-if="!$root.store.username" class="guest-section">
+        Hello guest
+        </span> 
+        <span v-if="$root.store.username" class="user-section">
+        Hello {{ $root.store.username }}
+      </span>
+        
         <router-link :to="{ name: 'main' }" class="nav-link">Vue Recipes</router-link>
         <span class="divider">|</span>
         <router-link :to="{ name: 'search' }" class="nav-link">Search</router-link>
@@ -12,19 +19,23 @@
           <router-link :to="{ name: 'login' }" class="nav-link">Login</router-link>
         </span>
         <span v-else class="user-section">
-          <router-link :to="{ name: 'favorites' }" class="nav-link">My Favorites</router-link>
-          <span class="divider">|</span>
-          <router-link :to="{ name: 'family' }" class="nav-link">My Family</router-link>
-          <span class="divider">|</span>
-          <span class="username">{{ $root.store.username }}</span>:
+          <b-dropdown right split text="My Content">
+            <b-dropdown-item>
+              <router-link :to="{ name: 'favorites' }" class="nav-link">My Favorites</router-link>
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <router-link :to="{ name: 'family' }" class="nav-link">My Family</router-link>
+            </b-dropdown-item>     
+            <b-dropdown-item>
+              <router-link :to="{ name: 'myRec' }" class="nav-link">My Recipes</router-link>
+            </b-dropdown-item>         
+          </b-dropdown>
           <button class="logout-button" @click="Logout">Logout</button>
         </span>
       </div>
     </div>
   </template>
-  
-  
-  
+
 
 <script>
 export default {

@@ -2,18 +2,17 @@
 <template>
     <div>
         <h2> My Family </h2>
-      
       <ul>
         <p> 
             {{ family }}
         </p>
       </ul>
-      <RecipePreviewList :recipes="family" />
+      <FamilyPreviewList :recipes="family" />
     </div>
   </template>
   
   <script>
-  import RecipePreviewList from "../components/RecipePreviewList.vue";
+  import FamilyPreviewList from "../components/FamilyPreviewList.vue";
   export default {
 
     data() {
@@ -25,7 +24,7 @@
       this.getFamily();
     },
     components: {
-      RecipePreviewList
+      FamilyPreviewList
     },
     methods: {
       async getFamily() {

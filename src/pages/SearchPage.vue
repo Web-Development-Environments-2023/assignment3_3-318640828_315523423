@@ -5,6 +5,8 @@
       <b-input-group-prepend is-text>
         <b-icon icon="search"></b-icon>
       </b-input-group-prepend>
+      
+      
       <div class="search-container">
         <input type="text" v-model="search" placeholder="Search terms" @keydown.enter="handleSearchQuery">
         <button @click="handleSearchQuery">Search</button>
@@ -21,6 +23,15 @@
     <!-- VueSelect component -->
     <VueSelect v-model="selectedCuisine" :options="cuisine_array" label="Select Cuisine" multiple></VueSelect>
 
+    <div>
+        <b-button-group>
+          <b-dropdown right text="NumberOfRecipes">
+            <b-dropdown-item @click="updateNumber(5)">5</b-dropdown-item>
+            <b-dropdown-item @click="updateNumber(10)">10</b-dropdown-item>
+            <b-dropdown-item @click="updateNumber(15)">15</b-dropdown-item>
+          </b-dropdown>
+        </b-button-group>
+      </div>
   </div>
 </template>
 
@@ -33,6 +44,7 @@ import 'vue-select/dist/vue-select.css';
 export default {
   data() {
     return {
+      chosenNumber: 5,
       recipes: [],
       selected: null,
       numberOfRecipes: 5, 
@@ -104,6 +116,9 @@ export default {
     };
   },
   methods: {
+    updateNumber(number) {
+      this.chosenNumber = number;
+    },
     async getRecipes() {
       try {
         const queryArguments = {
@@ -199,4 +214,10 @@ export default {
   }
   }
 };
+</script>
+<script>
+ function chooseNumber(number) {
+    console.log('Selected number:', number);
+    // You can perform any desired action with the chosen number here
+  }
 </script>
