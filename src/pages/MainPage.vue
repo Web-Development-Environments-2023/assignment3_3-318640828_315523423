@@ -1,8 +1,10 @@
 
 <template>
-<h1 class="title">Main Page</h1>
-<div class="container">
 
+<div class="container">
+  <div class="title">
+    <h1> Main Page </h1>
+  </div>
   <div class="basedOnLogin"> 
         <h2> Last watched recipes </h2>
         <h3> You need to Login to vue this </h3>
@@ -11,7 +13,6 @@
         </span> 
         <span v-if="$root.store.username" class="user-section">
             // the user lastviewed recipes
-
         </span>
   </div>  
 
@@ -57,9 +58,9 @@ export default {
       async getRandom() {
         try {
           return [];
-            const response = await this.axios.get(this.$root.store.server_domain + "/recipes/random",
-            {withCredentials: true});
-            this.random = response.data;
+          const response = await this.axios.get(this.$root.store.server_domain + "/recipes/random",
+          {withCredentials: true});
+          this.random = response.data;
         } catch (err) {
           console.log(err);
         }
@@ -73,18 +74,21 @@ export default {
 .container {
   display: flex;
   flex-wrap: wrap;
+  flex-basis: 150%;
+
   justify-content: space-between;
 }
 
-.basedOnLogin {
-  flex-basis: 50%;
-  margin-right: 10px;
+.content {
+  display: flex;
+  flex-basis: 150%;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
+.basedOnLogin,
 .randomRecipes {
-  flex-basis: 50%;
-  margin: 10px 0 10px;
-
+  flex-basis: calc(50% - 5px);
+  margin: 10px 0;
 }
-
 </style>
