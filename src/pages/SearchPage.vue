@@ -5,10 +5,8 @@
       <b-input-group-prepend is-text>
         <b-icon icon="search"></b-icon>
       </b-input-group-prepend>
-      
-      
       <div class="search-container">
-        <input type="text" v-model="search" placeholder="Search terms" @keydown.enter="handleSearchQuery">
+        <input type="text" v-model="$v.form.search.$model" placeholder="Search terms" @keydown.enter="handleSearchQuery">
         <button @click="handleSearchQuery">Search</button>
       </div>
     </b-input-group>
@@ -18,122 +16,130 @@
     </b-button-group>
 
     <!-- Recipe previews -->
-    <RecipePreview v-for="recipe in recipes" :key="recipe.id" :recipe="recipe"></RecipePreview>
+    <RecipePreviewList :recipes="recipes"></RecipePreviewList>
 
     <!-- VueSelect component -->
-    <VueSelect v-model="selectedCuisine" :options="cuisine_array" label="Select Cuisine" multiple></VueSelect>
+    <!-- <VueSelect v-model="selectedCuisine" :options="cuisine_array" label="Select Cuisine" multiple></VueSelect> -->
 
-    <div>
-        <b-button-group>
-          <b-dropdown right text="NumberOfRecipes">
-            <b-dropdown-item @click="updateNumber(5)">5</b-dropdown-item>
-            <b-dropdown-item @click="updateNumber(10)">10</b-dropdown-item>
-            <b-dropdown-item @click="updateNumber(15)">15</b-dropdown-item>
-          </b-dropdown>
-        </b-button-group>
-      </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import RecipePreview from '../components/RecipePreview.vue';
-import VueSelect from 'vue-select';
+import RecipePreviewList from '../components/RecipePreviewList.vue';
+import 'vue-select/dist/vue-select.js'
+import VueSelect from 'vue-select/dist/vue-select.js';
 import 'vue-select/dist/vue-select.css';
 
 export default {
   data() {
     return {
-      chosenNumber: 5,
-      recipes: [],
-      selected: null,
-      numberOfRecipes: 5, 
-      searchTerms: [],
-      selectedCuisine: [], // Add selectedCuisine property
-      orderBy: 'popularity',
-      options: [],
-      showResults: false,
+      form: {
+        search: '',
+        selected: null,
+        numberOfRecipes: 5, 
+        searchTerms: [],
+        selectedCuisine: [], // Add selectedCuisine property
+        orderBy: 'popularity',
+        options: [],
+        showResults: false,
+        diets: [],
+        intolerances: [],
+        submitError: undefined,
+      },
+      selectedCuisine: [{ value: null, text: "", disabled: true }],
+      diets: [{ value: null, text: "", disabled: true }],
+      intolerances: [{ value: null, text: "", disabled: true }],
+      show_recipes: [],
       cuisine_array: [
-        "African",
-        "Asian",
-        "American",
-        "British",
-        "Cajun",
-        "Caribbean",
-        "Chinese",
-        "Eastern European",
-        "European",
-        "French",
-        "German",
-        "Greek",
-        "Indian",
-        "Irish",
-        "Italian",
-        "Japanese",
-        "Jewish",
-        "Korean",
-        "Latin American",
-        "Mediterranean",
-        "Mexican",
-        "Middle Eastern",
-        "Nordic",
-        "Southern",
-        "Spanish",
-        "Thai",
-        "Vietnamese"
-      ],
-      dietary_list: [
-        "Gluten Free",
-        "Ketogenic",
-        "Vegetarian",
-        "Lacto-Vegetarian",
-        "Ovo-Vegetarian",
-        "Vegan",
-        "Pescetarian",
-        "Paleo",
-        "Primal",
-        "Modified Paleo (Dairy allowed)",
-        "Low FODMAP",
-        "Whole30"
-      ],
-      allergens_list: [
-        "Dairy",
-        "Egg",
-        "Gluten",
-        "Grain",
-        "Peanut",
-        "Seafood",
-        "Sesame",
-        "Shellfish",
-        "Soy",
-        "Sulfite",
-        "Tree Nut",
-        "Wheat"
-      ],
-      search: '',
-      cuisine: [],
+          "African",
+          "Asian",
+          "American",
+          "British",
+          "Cajun",
+          "Caribbean",
+          "Chinese",
+          "Eastern European",
+          "European",
+          "French",
+          "German",
+          "Greek",
+          "Indian",
+          "Irish",
+          "Italian",
+          "Japanese",
+          "Jewish",
+          "Korean",
+          "Latin American",
+          "Mediterranean",
+          "Mexican",
+          "Middle Eastern",
+          "Nordic",
+          "Southern",
+          "Spanish",
+          "Thai",
+          "Vietnamese"
+        ],
+        dietary_list: [
+          "Gluten Free",
+          "Ketogenic",
+          "Vegetarian",
+          "Lacto-Vegetarian",
+          "Ovo-Vegetarian",
+          "Vegan",
+          "Pescetarian",
+          "Paleo",
+          "Primal",
+          "Modified Paleo (Dairy allowed)",
+          "Low FODMAP",
+          "Whole30"
+        ],
+        allergens_list: [
+          "Dairy",
+          "Egg",
+          "Gluten",
+          "Grain",
+          "Peanut",
+          "Seafood",
+          "Sesame",
+          "Shellfish",
+          "Soy",
+          "Sulfite",
+          "Tree Nut",
+          "Wheat"
+        ],
       
     };
   },
   methods: {
-    updateNumber(number) {
-      this.chosenNumber = number;
-    },
     async getRecipes() {
       try {
+        console.log("this is validation")
         const queryArguments = {
-          query: this.search.trim().split(" "),
-          number: this.numberOfRecipes,
-          cuisine: this.selectedCuisine.join(","),
+          query: this.form.search,
+          // number: this.form.numberOfRecipes,
+          // cuisine: this.form.selectedCuisine.join(","),
         };
-        const response = await axios.get(`${this.$root.store.server_domain}/recipes/`, { params: queryArguments });
-        this.recipes = response.data;
+        this.recipes = [];
+        // console.log("this is queryArguments: the string - " + queryArguments.query + ", " + queryArguments.number + ", " + queryArguments.cuisine);
+        const response = await this.axios.get(this.$root.store.server_domain + "/recipes", {
+          params: queryArguments
+        });
+
+
+        // const response = await axios.get(`${this.$root.store.server_domain}/recipes`, { params: queryArguments }); 
+        console.log("this is response: " + response.data);
+        if (response.status === 200) {
+          this.recipes = response.data;
+        
+        console.log("this is this.recipe:" + this.recipes);
         if (!(this.recipes.length > 0 && this.recipes[0].title != null)){
           this.recipes = [];
           this.showResults = false;
         }
         this.showResults = true;
         console.log(this.recipes);
+      }
       } catch (error) {
         console.log(error);
       }
@@ -141,7 +147,7 @@ export default {
     
     async handleSearchQuery() {
       try {
-        if (this.search.trim() !== '') {
+        if (this.form.search !== '') {
           await this.getRecipes();
         }
       } catch (error) {
@@ -149,7 +155,6 @@ export default {
       }
     },
   },
-    
     async addTermToSearch(term) {
       try{
         if (!this.searchTerms.includes(term)) {
@@ -160,30 +165,23 @@ export default {
         console.log(error);
       }
     },
-
-    // async handleSearchQuery() {
-    //   try {
-    //     {{console.log(this.search)}}
-    //     if (this.search.trim() !== '') {
-    //       this.searchTerms = this.search.trim().split(" ");
-    //       await this.getRecipes();
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    // handleSearchQuery: async () => {
-    //   try {
-    //     {{console.log(this.search)}}
-    //     if (this.search.trim() !== '') {
-    //       this.searchTerms = this.search.trim().split(" ");
-    //       await this.getRecipes();
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-
+    async resetSearch() {
+      this.form = {
+        search: '',
+        selected: null,
+        numberOfRecipes: 5, 
+        searchTerms: [],
+        selectedCuisine: [], // Add selectedCuisine property
+        orderBy: 'popularity',
+        options: [],
+        showResults: false,
+        diet: [],
+        intolerances: [],
+      };
+      this.$nextTick(() => {
+        this.$v.$reset();
+      });
+    },
 
   validations: {
     form: {
@@ -193,15 +191,19 @@ export default {
   }, 
 
   components: {
-    RecipePreview,
-    VueSelect
+    RecipePreviewList,
+    VueSelect,
   },
+
   mounted() {
     this.options = this.cuisine_array.map(cuisine => {
       return { name: cuisine, value: cuisine };
     });
 
     this.handleSearchQuery = this.handleSearchQuery.bind(this);
+
+    this.diets.push(...diets);
+    this.intolerances.push(...intolerances);
   },
   watch: {
     selected: function(val) {
@@ -214,10 +216,4 @@ export default {
   }
   }
 };
-</script>
-<script>
- function chooseNumber(number) {
-    console.log('Selected number:', number);
-    // You can perform any desired action with the chosen number here
-  }
 </script>
