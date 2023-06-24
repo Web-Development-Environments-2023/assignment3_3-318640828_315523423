@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+    :to="{ name: 'recipe', params: { recipeId: recipe } }"
     class="recipe-preview"
   >
     <!-- @click="handleTemplatePress(recipe.id)" -->
