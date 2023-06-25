@@ -12,7 +12,7 @@
   </template>
   
   <script>
-  import MyRecipePreviewList from "../components/RecipePreviewList.vue";
+  import MyRecipePreviewList from "../components/InternalPreviewList.vue";
   export default {
 
     data() {

@@ -1,18 +1,18 @@
 <template>
   <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe } }"
+    :to="{ name: 'recipe', params: { recipeId: recipe} }"
     class="recipe-preview"
   >
     <!-- @click="handleTemplatePress(recipe.id)" -->
   
       <div class="recipe-body">
       <img v-if="image_load && recipe.image" :src="recipe.image" class="recipe-image" />
-      <div v-else class="placeholder"></div>
+      <div v-else class="placeholder">No photo attached</div>
     </div>
-
+<!-- 
     <div class="recipe-body">
       <img v-if="image_load" :src="recipe.image" class="recipe-image" />
-    </div>
+    </div> -->
 
     <div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">

@@ -97,24 +97,6 @@ export default {
 };
 </script>
 
-<!-- <style scoped>
-.wrapper {
-  display: flex;
-}
-.wrapped {
-  width: 50%;
-}
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-/* .recipe-header{
-
-} */
-</style> -->
-
 <style scoped>
 .container {
   max-width: 800px;
@@ -166,7 +148,6 @@ li {
   margin-bottom: 8px;
 }
 
-/* Adjust the font size and line height of instructions */
 .recipe-body .wrapped .instructions {
   font-size: 16px;
   line-height: 1.5;

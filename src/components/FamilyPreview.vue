@@ -1,11 +1,11 @@
 <template>
-    <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+  <router-link
+    :to="{ name: 'Internalfamily', params: { recipeId: recipe[0] } }"
     class="family-recipe-preview"
   >
-    <div class="recipe-footer"> 
+    <div class="recipe-footer">
       <div :title="recipe[0].owner" class="recipe-title">
-      {{ recipe[0].owner }}
+        {{ recipe[0].owner }}
       </div>
       <ul class="recipe-overview">
         <li>{{ recipe[0].cookingTime }} cookingTime</li>
@@ -13,9 +13,8 @@
         <li>{{ recipe[0].instructions }} instructions</li>
       </ul>
     </div>
-    </router-link>
-  </template>
-  
+  </router-link>
+</template>
 
   <script>
   export default {
@@ -26,7 +25,7 @@
       }
     },
     created() {
-    console.log(this.recipe.owner);}
+      console.log(this.recipe.owner);}
   };
   </script>
   

@@ -55,6 +55,16 @@ const routes = [
     component: () => import("./pages/AboutPage"),
   },
   {
+    path: "/Internalrecipe",
+    name: "Internalrecipe",
+    component: () => import("./pages/InternalRecipePage"),
+  },
+  {
+    path: "/Internalfamily",
+    name: "Internalfamily",
+    component: () => import("./pages/InternalFamilyPage"),
+  },
+  {
     path: "*", 
     name: "notFound",
     component: NotFound,
