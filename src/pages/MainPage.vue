@@ -7,8 +7,8 @@
   </div>
   <div class="basedOnLogin"> 
         <h2> Last watched recipes </h2>
-        <h3> You need to Login to vue this </h3>
         <span v-if="!$root.store.username" class="guest-section">
+          <h3> You need to Login to vue this </h3>
           <LoginPage v-if="showLoginPage" />
         </span> 
         <span v-if="$root.store.username" class="user-section">

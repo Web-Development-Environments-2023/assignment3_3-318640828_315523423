@@ -3,6 +3,10 @@
 
   <div class="container">
     <div v-if="recipe">
+     <button class="addToFavorites" @click="addToFavorites">
+      {{ isFavorite ? 'marked as favorites' : 'Add to favorites' }}
+      </button>
+      
       <div class="recipe-header mt-3 mb-4">
         <h1>{{ this.recipe.title }}</h1>
         <img :src="this.recipe.image" class="center" />
@@ -41,12 +45,46 @@
 
 
 <script>
+import { required } from "vuelidate/lib/validators";
+
 export default {
   data() {
     return {
       recipe: [],
+      isFavorite: false,
       };
   },
+
+  methods: {
+    async addToFavorites() {
+      console.log("addToFavorites");
+      try {
+        const response = await this.axios.post(this.$root.store.server_domain + "/users/favorites",
+          {recipeId: this.recipe.id},
+          {withCredentials: true}
+        );
+        this.isFavorite = true;
+      } catch (err) {
+        console.log(err.response);
+        this.form.submitError = err.response.data.message;
+      }
+    },
+    // async checkFavorite(){
+    // const check = this.axios.get(this.$root.store.server_domain + "/users/isfavorites",
+    //       {recipeId: this.recipe.id},
+    //       {withCredentials: true}
+    //     );
+    //     if (check.status === 200 && check.data.length > 0) {
+    //       this.isFavorite = true;
+    //     } else {
+    //       this.isFavorite = false;
+    //     }
+    //  }
+  },
+
+  // TODO: add methods to save last seen recipes- need to add table to db
+  // TODO: add method to check if recipe is saved as favorite for the user
+  
   async created() {
     try {  
     try {
@@ -57,6 +95,7 @@ export default {
           });     
         if (response.status !== 200) this.$router.replace("/NotFound");
         this.recipe = response.data[0];
+        // this.isFavorite = this.checkFavorite();
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
