@@ -70,7 +70,7 @@ export default {
       }
     },
     // async checkFavorite(){
-    // const check = this.axios.get(this.$root.store.server_domain + "/users/isfavorites",
+    //     const check = this.axios.get(this.$root.store.server_domain + "/users/isfavorites",
     //       {recipeId: this.recipe.id},
     //       {withCredentials: true}
     //     );
@@ -95,7 +95,7 @@ export default {
           });     
         if (response.status !== 200) this.$router.replace("/NotFound");
         this.recipe = response.data[0];
-        // this.isFavorite = this.checkFavorite();
+        //this.isFavorite = this.checkFavorite();
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");

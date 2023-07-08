@@ -1,6 +1,5 @@
 <template>
   <b-container>
-    
     <b-row>
       <b-col v-for="r in recipes" :key="r.id">
         <InternalRecipePreview class="recipePreview" :recipe="r" />

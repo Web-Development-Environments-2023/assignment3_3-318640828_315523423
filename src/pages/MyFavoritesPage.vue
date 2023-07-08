@@ -1,14 +1,23 @@
 
 <template>
-    <div>
-      <h2> My Favorites </h2>
-      <ul>
-        <p> 
-            {{ favorites }}
-        </p>
-      </ul>
+  <div>
+    <div class="title">
+      <h1> Favorites Page </h1>
+    </div>
+    <div class="container">
+      <div class="favorites-container">
+        <!-- <ul>
+          <p> 
+              {{ favorites }}
+          </p>
+        </ul> -->
+      </div>
+      <div class="recipe-preview-list-container">
       <RecipePreviewList :recipes="favorites" />
     </div>
+
+    </div>
+  </div>
   </template>
   
   <script>
@@ -41,3 +50,24 @@
   </script>
   
 
+  <style lang="scss" scoped>
+.favorites-container {
+  column-count: 2;
+  column-gap: 20px;
+}
+
+.recipe-preview-list-container {
+  column-count: 3;
+  column-gap: 20px;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 150%;
+    justify-content: space-between;
+  }
+  .title{
+    text-align: center;
+    background-color: bisque;
+  }
+</style>

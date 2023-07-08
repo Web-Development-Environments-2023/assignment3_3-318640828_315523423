@@ -42,6 +42,8 @@
 
 
 <script>
+import CreateRecipeModal from "./Modal.vue";
+
 export default {
     name: "NavBar",
     methods: {
