@@ -1,10 +1,8 @@
 <template>
   <b-container>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <InternalRecipePreview class="recipePreview" :recipe="r" />
-      </b-col>
-    </b-row>
+    <div class="recipe-list">
+      <InternalRecipePreview v-for="r in recipes" :key="r.id" class="recipe-item" :recipe="r"/>
+    </div>
   </b-container>
 </template>
 
@@ -39,12 +37,9 @@ export default {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes",
         );
-
-        // console.log(response);
         const recipes = response.data.recipes;
         this.recipes = [];
         this.recipes.push(...recipes);
-        // console.log(this.recipes);
       } catch (error) {
         console.log(error);
       }
@@ -52,3 +47,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.recipe-item {
+  width: 100%;
+  } 
+</style> 

@@ -1,36 +1,83 @@
 <template>
-    <div>
-      <div>
-        <b-button v-b-modal.create-recipe-modal>Create Recipe</b-button>
-        <b-modal id="create-recipe-modal" title="Create Recipe">
-          <form @submit.prevent="submitForm">
-            <!-- Form content -->
-            <!-- ... -->
-          </form>
-        </b-modal>
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "CreateRecipeModal",
-    data() {
-      return {
-        recipeName: "",
-        // Rest of the form data properties
-      };
+  <div>
+    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
+
+    <!-- <div class="mt-3">
+      Submitted Names:
+      <div v-if="submittedNames.length === 0">--</div>
+      <ul v-else class="mb-0 pl-3">
+        <li v-for="(name, index) in submittedNames" :key="index">{{ name }}</li>
+      </ul>
+    </div> -->
+
+    <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="Submit Your Name"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          label="Name"
+          label-for="name-input"
+          invalid-feedback="Name is required"
+          :state="nameState"
+        >
+          <b-form-input
+            id="name-input"
+            v-model="name"
+            :state="nameState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: '',
+      nameState: null,
+      submittedNames: []
+    }
+  },
+  methods: {
+    show() {
+      console.log('showing modal');
+      this.$refs.modal.show();
     },
-    methods: {
-      submitForm() {
-        // Handle form submission logic
-        // ...
-        this.$bvModal.hide("create-recipe-modal"); // Close the modal after form submission
-      },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid
+      return valid
     },
-  };
-  </script>
-  
-  <style>
-  /* Modal styles */
-  </style>
+    resetModal() {
+      this.name = ''
+      this.nameState = null
+    },
+    handleOk(bvModalEvent) {
+      // Prevent modal from closing
+      bvModalEvent.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+      // Push the name to submitted names
+      this.submittedNames.push(this.name)
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-prevent-closing')
+      })
+    }
+  }
+}
+</script>

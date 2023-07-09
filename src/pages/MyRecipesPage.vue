@@ -1,13 +1,20 @@
 
 <template>
     <div>
-      <h2> My Recipes </h2>
-      <ul>
+      <div class="title">
+        <h1> My Recipes Page </h1>
+      </div>
+      <div class="container">
+      <!-- <ul>
         <p> 
             {{ my }}
         </p>
-      </ul>
+      </ul> -->
+      <div class="recipe-preview-list-container">
+
       <MyRecipePreviewList :recipes="my" />
+      </div>
+    </div>
     </div>
   </template>
   
@@ -41,3 +48,26 @@
   </script>
   
 
+
+
+  <style lang="scss" scoped>
+
+
+.recipe-preview-list-container {
+  column-count: 3;
+  column-gap: 20px;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 150%;
+    justify-content: space-between;
+  }
+  .title {
+    text-align: center;
+    background-color: bisque;
+  }
+  h2 {
+    text-align: center;
+  }
+  </style>

@@ -3,11 +3,9 @@
     :to="{ name: 'Internalrecipe', params: { recipeId: recipe } }"
     class="recipe-preview"
   >
-    <!-- @click="handleTemplatePress(recipe.id)" -->
-  
-
-    <div class="recipe-footer">
-      <div :title="recipe[0].title" class="recipe-title">{{ recipe.title }}</div>
+    <div class="recipe-body">
+      <div :title="recipe[0].title" class="recipe-title">{{ recipe[0].title }}</div>
+      <img v-if="recipe[0].image" :src="recipe[0].image" class="recipe-image" />
 
       <div class="recipe-details">
         <div class="recipe-info">
@@ -17,7 +15,7 @@
           </ul>
         </div>
 
-        <div class="recipe-options">
+        <div class="recipe-info">
           <ul>
             <li v-if="recipe[0].vegetarian">vegetarian</li>
             <li v-if="recipe[0].vegan">vegan</li>
@@ -26,6 +24,7 @@
         </div>
       </div>
     </div>
+
   </router-link>
 </template>
 
@@ -50,87 +49,58 @@ export default {
 };
 </script>
 
-<style scoped>
-.recipe-preview {
+
+
+<style lang="scss" scoped>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+
+    .recipe-preview {
+      text-decoration: none;
+      width: 100%;
+      max-width: 300px;
+      color: #333;
+      max-height: 400px;
+    }
+
+    .recipe-body {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .recipe-title {
+      color: #333;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .recipe-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+ 
+  
+    
+.recipe-details {
   display: flex;
-  text-decoration: none;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  flex-direction:column;
+}
+.recipe-info{
+  display: flex;
+  justify-content: space-between;
   width: 100%;
 }
-
-.recipe-preview:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.recipe-body {
-  text-align: center;
-}
-
-.recipe-body img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.recipe-footer {
-  margin-top: 10px;
-  margin-bottom: 10px;
-
-}
-
-.recipe-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.recipe-overview {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.recipe-overview li {
-  margin-right: 10px;
-  font-size: 14px;
-}
-
-.recipe-overview li::before {
-  content: '•';
-  margin-right: 5px;
-}
-
-.recipe-overview li:last-child {
-  margin-right: 0;
-}
-
-.recipe-overview li[title] {
-  cursor: pointer;
-}
-
-.recipe-overview li[title]:hover {
-  text-decoration: underline;
-}
-
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 
 .recipe-info ul,
 .recipe-options ul {
   list-style: none;
-  margin: 0;
   padding: 0;
 }
 
@@ -143,8 +113,7 @@ export default {
   padding: 5px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #f2f2f2;
-  margin-bottom: 10px;
+  background-color: #f2f2f2;  
 }
-
-</style>
+  </style>
+  

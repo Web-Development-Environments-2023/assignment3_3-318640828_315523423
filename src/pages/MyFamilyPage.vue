@@ -1,12 +1,14 @@
 
 <template>
     <div>
-        <h2> My Family </h2>
-      <ul>
+      <div class="title">
+      <h1> Family recipes Page </h1>
+    </div>
+      <!-- <ul>
         <p> 
             {{ family }}
         </p>
-      </ul>
+      </ul> -->
       <FamilyPreviewList :recipes="family" />
     </div>
   </template>
@@ -41,3 +43,13 @@
   </script>
   
 
+
+  <style lang="scss" scoped>
+  .title {
+    text-align: center;
+    background-color: bisque;
+  }
+  h2 {
+    text-align: center;
+  }
+  </style>

@@ -1,4 +1,5 @@
 <template>
+  
     <div>
       <div id="nav">
         <span v-if="!$root.store.username" class="guest-section">
@@ -32,9 +33,12 @@
             </b-dropdown-item>   
             <b-dropdown-item>
               <router-link :to="{ name: 'create' }" class="nav-link">Create New Recipe</router-link>
-            </b-dropdown-item>        
+            </b-dropdown-item>  
+            <b-dropdown-item>
+            </b-dropdown-item>      
           </b-dropdown>
           <button class="logout-button" @click="Logout">Logout</button>
+          
         </span>
       </div>
     </div>
@@ -42,10 +46,14 @@
 
 
 <script>
-import CreateRecipeModal from "./Modal.vue";
-
 export default {
-    name: "NavBar",
+    
+  data() {
+      return {
+        showLoginPage: true
+      };
+    },
+  name: "NavBar",
     methods: {
         Logout() {
             this.$root.store.logout();
@@ -106,3 +114,4 @@ export default {
   margin-left: 10px;
 }
 </style>
+

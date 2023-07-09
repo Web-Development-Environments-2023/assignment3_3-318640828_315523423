@@ -82,11 +82,12 @@
     text-align: center;
     background-color: bisque;
   }
-  .basedOnLogin LoginPage{
-    margin-left: 0%;
-  }
   h2 {
     text-align: center;
   }
+  .basedOnLogin LoginPage{
+    margin-left: 0%;
+  }
+
   </style>
   

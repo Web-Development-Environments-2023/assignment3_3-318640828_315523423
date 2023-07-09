@@ -3,16 +3,18 @@
     :to="{ name: 'Internalfamily', params: { recipeId: recipe[0] } }"
     class="family-recipe-preview"
   >
-    <div class="recipe-footer">
-      <div :title="recipe[0].owner" class="recipe-title">
-        {{ recipe[0].owner }}
+    <div class="recipe-body">
+      <div :title="recipe[0].owner" class="recipe-title">{{ recipe[0].owner }}</div>
+        <img v-if="recipe[0].image" :src="recipe[0].image" class="recipe-image" />
+       
+      <div class="recipe-details">
+        <ul class="recipe-info">
+          <li>{{ recipe[0].cookingTime }} cookingTime</li>
+          <li>{{ recipe[0].ingridients }} ingridients</li>
+          <li>{{ recipe[0].instructions }} instructions</li>
+        </ul>
       </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe[0].cookingTime }} cookingTime</li>
-        <li>{{ recipe[0].ingridients }} ingridients</li>
-        <li>{{ recipe[0].instructions }} instructions</li>
-      </ul>
-    </div>
+  </div>
   </router-link>
 </template>
 
@@ -30,47 +32,49 @@
   </script>
   
 
-  <style scoped>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
-
-    .recipe-preview {
+  <style lang="scss" scoped>    
+  .family-recipe-preview {
       text-decoration: none;
+      width: 50%;
+      max-width: 300px;
+      color: #333;
+      max-height: 400px;
     }
 
-    .recipe-body {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
-      background-color: #eee;
-    }
 
-    .recipe-image {
+.recipe-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.recipe-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      margin-bottom: 10px;
     }
-
-    .recipe-footer {
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin-top: 10px;
-    }
-
-    .recipe-title {
+  
+.recipe-title {
       color: #333;
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 5px;
     }
+.recipe-details {
+  display: flex;
+  justify-content: space-between;
+  flex-direction:column;
+}
 
-    .recipe-overview li {
+
+.recipe-info{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+}
+
+.recipe-info li{
   display: inline-block;
   margin-right: 10px;
   color: #777;
@@ -79,9 +83,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f2f2f2;
-}    
-    
-  </style>
+}
+
+</style>
   
 
 

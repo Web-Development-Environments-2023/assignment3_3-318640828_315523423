@@ -5,11 +5,7 @@
       <slot></slot>
     </h3> -->
     <div class="recipe-list">
-      <RecipePreview
-        v-for="r in recipes"
-        :key="r.id"
-        class="recipe-item"
-        :recipe="r"
+      <RecipePreview v-for="r in recipes" :key="r.id" class="recipe-item" :recipe="r"
       />
     </div>
     <!-- <b-row>
@@ -51,12 +47,9 @@ export default {
         const response = await this.axios.get(
           this.$root.store.server_domain + "/recipes",
         );
-
-        // console.log(response);
         const recipes = response.data.recipes;
         this.recipes = [];
         this.recipes.push(...recipes);
-        // console.log(this.recipes);
       } catch (error) {
         console.log(error);
       }
@@ -65,7 +58,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .recipe-item {
   width: 100%;
   } 
