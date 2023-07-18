@@ -61,17 +61,20 @@ export default {
 
     .recipe-preview {
       text-decoration: none;
-      width: 50%;
-      max-width: 300px;
+      width: 100%;
+      max-width: 100%;
       color: #333;
-      max-height: 400px;
+      max-height: 100%;
     }
 
     .recipe-body {
       position: relative;
-      width: 100%;
-      height: 200px;
+      width: 500px;
+      height: 250px;
       overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      display: flex;
       background-color: #eee;
     }
 

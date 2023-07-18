@@ -6,19 +6,27 @@
       <h1> Main Page </h1>
     </div>
   <div class="container">
+
     <div class="randomRecipes">
       <h2> Random Recipes </h2>
-      <RandomRecipePreviewList :recipes="random" />
+      <div class="random-preview-list">
+      <RandomRecipePreviewList :recipes="random"/>
+      </div>
     </div>
+
     <div class="basedOnLogin"> 
-          <h2> Last watched recipes </h2>
-          <span v-if="!$root.store.username" class="guest-section">
-            <h3> You need to Login to vue this </h3>
-            <LoginPage v-if="showLoginPage" />
-          </span> 
-          <span v-if="$root.store.username" class="user-section">
-              // the user lastviewed recipes
-          </span>
+      <h2> Last watched recipes </h2>
+      
+      <span v-if="!$root.store.username" class="guest-section">
+        <h3> You need to Login to vue this </h3>
+      
+        <LoginPage v-if="showLoginPage" />
+      </span> 
+      <span v-if="$root.store.username" class="user-section">
+      <div class="last-viewed-preview-list">
+        <lastViewedPreviewList :recipes="lastViewed" />
+      </div>
+      </span>
     </div>   
   </div>
   </div>
@@ -28,20 +36,24 @@
   <script>
   import LoginPage from './LoginPage';
   import RandomRecipePreviewList from "../components/RecipePreviewList";
+  import lastViewedPreviewList from "../components/RecipePreviewList";
   export default {
     data() {
       return {
+        lastViewed: [],
         random: [],
         showLoginPage: true
       };
     },
     components: {
+      lastViewedPreviewList,
       RandomRecipePreviewList,
       LoginPage
       
     },
     mounted() {
       this.getRandom();
+      this.getLastViewed();
     },
     methods: {
         async getRandom() {
@@ -53,41 +65,62 @@
           } catch (err) {
             console.log(err);
           }
+        },
+        async getLastViewed() {
+          try {
+            //return [];
+            const response = await this.axios.get(this.$root.store.server_domain + "/users/lastViewed",
+            {withCredentials: true});
+            this.lastViewed = response.data;
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
   };
   </script>
   
-  <style lang="scss" scoped>
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 150%;
-    justify-content: space-between;
-  }
- 
-  .basedOnLogin,
-  .randomRecipes {
-    flex-basis: calc(50%);
-    width: 100%;   
+  <style scoped>
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
-  }
-  .basedOnLogin h3 {
-    font-size: smaller;
-    color: red;
-    width: 100%;
-    text-align: center;
-  }
-  .title {
-    text-align: center;
-    background-color: bisque;
-  }
-  h2 {
-    text-align: center;
-  }
-  .basedOnLogin LoginPage{
-    margin-left: 0%;
-  }
+.randomRecipes {
+  flex-basis: 50%;
+  width: 100%;
+}
 
-  </style>
+.basedOnLogin {
+  flex-basis: 50%;
+  width: 100%;
+}
+
+.random-preview-list,
+.last-viewed-preview-list {
+  height: 100%;
+  border: 2px solid black;
+  
+}
+
+.title {
+  text-align: center;
+  background-color: bisque;
+}
+
+h2 {
+  text-align: center;
+  background-color: bisque;
+  border-radius: 20%;
+  border: 2px solid black;
+}
+
+.guest-section h3 {
+  font-size: smaller;
+  color: red;
+  width: 100%;
+  text-align: center;
+}
+</style>
   
