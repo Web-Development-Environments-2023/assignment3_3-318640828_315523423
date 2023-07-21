@@ -46,7 +46,7 @@
     methods: {
         async getRandom() {
           try {
-            //return [];
+            return [];
             const response = await this.axios.get(this.$root.store.server_domain + "/recipes/random",
             {withCredentials: true});
             this.random = response.data;

@@ -11,13 +11,15 @@
       </div>
     </b-input-group>
 
-    <b-button-group class="mt-2">
+    <!-- <b-button-group class="mt-2"> -->
       <!-- <b-button v-for="term in searchTerms" :key="term" @click="addTermToSearch(term)">{{ term }}</b-button> -->
-    </b-button-group>
+    <!-- </b-button-group> -->
 
     <!-- Recipe previews -->
-    <RecipePreviewList :recipes="recipes"></RecipePreviewList>
-
+    <div class="recipe-preview-container"> 
+    <RecipePreviewList name="RecipePreviewList" :recipes="recipes"/>
+    </div>
+    <!-- {{ recipes }} -->
     <!-- VueSelect component -->
     <!-- <VueSelect v-model="selectedCuisine" :options="cuisine_array" label="Select Cuisine" multiple></VueSelect> -->
 
@@ -26,12 +28,17 @@
 
 <script>
 import axios from 'axios'
-import RecipePreviewList from '../components/RecipePreviewList.vue';
+import RecipePreviewList from "../components/RecipePreviewList.vue";
 import 'vue-select/dist/vue-select.js'
-import VueSelect from 'vue-select/dist/vue-select.js';
-import 'vue-select/dist/vue-select.css';
+import VueSelect from 'vue-select/dist/vue-select.js'
+import 'vue-select/dist/vue-select.css'
 
 export default {
+  name: 'SearchPage',
+  components: {
+    
+    RecipePreviewList,
+  },
   data() {
     return {
       form: {
@@ -50,7 +57,7 @@ export default {
       selectedCuisine: [{ value: null, text: "", disabled: true }],
       diets: [{ value: null, text: "", disabled: true }],
       intolerances: [{ value: null, text: "", disabled: true }],
-      show_recipes: [],
+      recipes: [],
       cuisine_array: [
           "African",
           "Asian",
@@ -115,23 +122,30 @@ export default {
     async getRecipes() {
       try {
         console.log("this is validation")
-        const queryArguments = {
-          query: this.form.search,
-          // number: this.form.numberOfRecipes,
-          // cuisine: this.form.selectedCuisine.join(","),
-        };
+        const query = this.form.search;
+        // const queryArguments = {
+        //   query: this.form.search,
+        //   // number: this.form.numberOfRecipes,
+        //   // cuisine: this.form.selectedCuisine.join(","),
+        // };
         this.recipes = [];
-        // console.log("this is queryArguments: the string - " + queryArguments.query + ", " + queryArguments.number + ", " + queryArguments.cuisine);
-        const response = await this.axios.get(this.$root.store.server_domain + "/recipes", {
-          params: queryArguments
-        });
+        console.log("this is queryArguments: the string - " + query);
+        const response = await axios.get(this.$root.store.server_domain + "/recipes/search/" + query, 
+        {withCredentials: true});
 
 
         // const response = await axios.get(`${this.$root.store.server_domain}/recipes`, { params: queryArguments }); 
         console.log("this is response: " + response.data);
         if (response.status === 200) {
           this.recipes = response.data;
-        
+        const recipe_final_array = [];
+        this.recipes.forEach(async recipe => {
+          console.log("#1: " + recipe.id);
+          const respon = await axios.get(this.$root.store.server_domain + "/recipes/fullData/",  {params: recipe.id});
+          console.log("#2: " + respon.status);
+          recipe_final_array.push(respon.data)
+        });
+        console.log(recipe_final_array);
         console.log("this is this.recipe:" + this.recipes);
         if (!(this.recipes.length > 0 && this.recipes[0].title != null)){
           this.recipes = [];
@@ -190,10 +204,7 @@ export default {
       },
   }, 
 
-  components: {
-    RecipePreviewList,
-    VueSelect,
-  },
+  
 
   mounted() {
     this.options = this.cuisine_array.map(cuisine => {
@@ -217,3 +228,24 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  
+.recipe-preview-container {
+  column-count: 3;
+  column-gap: 20px;
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 150%;
+    justify-content: space-between;
+  }
+  .title {
+    text-align: center;
+    background-color: bisque;
+  }
+  h2 {
+    text-align: center;
+  }
+</style>
