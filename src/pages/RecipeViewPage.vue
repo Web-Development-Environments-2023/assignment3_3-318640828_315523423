@@ -2,6 +2,7 @@
 <template>
 
   <div class="container">
+    {{ this.recipe.id }}
     <div v-if="recipe">
      <button class="addToFavorites" @click="addToFavorites">
       {{ isFavorite ? 'marked as favorites' : 'Add to favorites' }}
@@ -54,10 +55,11 @@ export default {
       isFavorite: false,
       };
   },
-
+  mounted() {
+    //this.addToLastReviewed();
+  },
   methods: {
     async addToFavorites() {
-      console.log("addToFavorites");
       try {
         const response = await this.axios.post(this.$root.store.server_domain + "/users/favorites",
           {recipeId: this.recipe.id},
@@ -69,17 +71,35 @@ export default {
         this.form.submitError = err.response.data.message;
       }
     },
-    // async checkFavorite(){
-    //     const check = this.axios.get(this.$root.store.server_domain + "/users/isfavorites",
-    //       {recipeId: this.recipe.id},
-    //       {withCredentials: true}
-    //     );
-    //     if (check.status === 200 && check.data.length > 0) {
-    //       this.isFavorite = true;
-    //     } else {
-    //       this.isFavorite = false;
-    //     }
-    //  }
+    async addToLastReviewed() {
+      //console.log("addToLastReviewed");
+      //console.log(this.recipe.id);
+      try {
+        const response = await this.axios.post(this.$root.store.server_domain + "/users/lastViewed",
+          {recipeId: this.recipe.id},
+          {withCredentials: true}
+        );
+      } catch (err) {
+        console.log(err.response);
+        this.form.submitError = err.response.data.message;
+      }
+    },
+    async checkFavorite(){
+      console.log("checkFavorite-here");
+ 
+      const check = await this.axios.post(this.$root.store.server_domain + "/users/isfavorites",
+          {recipeId: this.recipe.id},
+          {withCredentials: true}
+        );
+      console.log("checkFavorite", check);
+      this.isFavorite = check.data;
+      console.log("isFavorite", this.isFavorite);
+      // if (check.status === 200 && check) {
+      //   this.isFavorite = true;
+      // } else {
+      //   this.isFavorite = false;
+      // }
+     }
   },
 
   // TODO: add methods to save last seen recipes- need to add table to db
@@ -87,30 +107,30 @@ export default {
   
   async created() {
     try {  
-    try {
-          const url = `${this.$root.store.server_domain}/recipes/fullData/:recipe_id`;
-          const replacedUrl = url.replace(":recipe_id", this.$route.params.recipeId.id);
-          const response = await this.axios.get(replacedUrl, {
-            withCredentials: true
-          });     
-        if (response.status !== 200) this.$router.replace("/NotFound");
-        this.recipe = response.data[0];
-        //this.isFavorite = this.checkFavorite();
-      } catch (error) {
-        console.log("error.response.status", error.response.status);
-        this.$router.replace("/NotFound");
-        return;
-      }    
-    let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title
-      } = response.data[0].recipe;
-      
+      try {
+            const url = `${this.$root.store.server_domain}/recipes/fullData/:recipe_id`;
+            const replacedUrl = url.replace(":recipe_id", this.$route.params.recipeId.id);
+            const response = await this.axios.get(replacedUrl, {
+              withCredentials: true
+            });     
+          if (response.status !== 200) this.$router.replace("/NotFound");
+          this.recipe = response.data[0];
+          //this.isFavorite = this.checkFavorite();
+        } catch (error) {
+            //console.log("error.response.status", error.response.status);
+            this.$router.replace("/NotFound");
+            return;
+        }   
+      let {
+          analyzedInstructions,
+          instructions,
+          extendedIngredients,
+          aggregateLikes,
+          readyInMinutes,
+          image,
+          title,
+          id
+        } = this.recipe;
       let _instructions = analyzedInstructions
         .map((fstep) => {
           fstep.steps[0].step = fstep.name + fstep.steps[0].step;
@@ -125,13 +145,16 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        id
       };
-
       this.recipe = _recipe;
+      this.checkFavorite();
+      this.addToLastReviewed();
     } catch (error) {
       console.log(error);
     }
+
   }
 };
 </script>
