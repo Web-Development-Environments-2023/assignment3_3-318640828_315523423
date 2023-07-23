@@ -37,7 +37,7 @@
             
             <b-dropdown-item @click="activateNewRecipe" class="nav-link">Create New Recipe</b-dropdown-item>
               <b-modal v-if="showModalDialog" v-model="showModalDialog"  hide-footer title="Add Recipe">
-                <AddRecipeModal @formSubmitted="closeModal"></AddRecipeModal>
+                <AddRecipeModal @formSubmitted="unshowModalDialog"></AddRecipeModal>
               </b-modal>
 
           </b-dropdown>
@@ -77,6 +77,9 @@ export default {
         activateNewRecipe() {
           this.showModalDialog = true;
         },
+        unshowModalDialog() {
+          this.showModalDialog = false;
+        }
     }
 };    
 </script>
