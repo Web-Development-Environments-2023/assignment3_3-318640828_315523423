@@ -15,7 +15,7 @@ export default {
     };
   },
   mounted() {
-    this.updateRecipes();
+    //this.updateRecipes();
   },
   name: "InternalPreviewList",
   components: {

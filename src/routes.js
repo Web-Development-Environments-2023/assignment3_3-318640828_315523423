@@ -47,7 +47,7 @@ const routes = [
   {
     path: "/create",
     name: "create",
-    component: () => import("./pages/CreateRecipePage"),
+    component: () => import("./pages/AddRecipeModal"),
   },
   {
     path: "/about",

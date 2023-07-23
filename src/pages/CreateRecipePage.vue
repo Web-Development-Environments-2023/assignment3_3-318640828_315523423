@@ -130,7 +130,7 @@
       </form>
   
       <!-- Include the Modal component -->
-      <modal @recipe-created="handleRecipeCreated" />
+      <Modal @recipe-created="handleRecipeCreated" />
     </div>
   </template>
   

@@ -34,11 +34,17 @@
             <b-dropdown-item>
               <router-link :to="{ name: 'create' }" class="nav-link">Create New Recipe</router-link>
             </b-dropdown-item>  
-            <b-dropdown-item>
-            </b-dropdown-item>      
+            
+            <b-dropdown-item @click="activateNewRecipe" class="nav-link">Create New Recipe</b-dropdown-item>
+              <b-modal v-if="showModalDialog" v-model="showModalDialog"  hide-footer title="Add Recipe">
+                <AddRecipeModal @formSubmitted="closeModal"></AddRecipeModal>
+              </b-modal>
+
           </b-dropdown>
           <button class="logout-button" @click="Logout">Logout</button>
-          
+
+
+
         </span>
       </div>
     </div>
@@ -46,12 +52,17 @@
 
 
 <script>
+import AddRecipeModal from './AddRecipeModal.vue';
 export default {
     
   data() {
       return {
-        showLoginPage: true
+        showLoginPage: true,
+        showModalDialog: false
       };
+    },
+    components: {
+      AddRecipeModal
     },
   name: "NavBar",
     methods: {
@@ -62,7 +73,10 @@ export default {
             this.$router.push("/").catch(() => {
                 this.$forceUpdate();
             });
-        }
+        },
+        activateNewRecipe() {
+          this.showModalDialog = true;
+        },
     }
 };    
 </script>

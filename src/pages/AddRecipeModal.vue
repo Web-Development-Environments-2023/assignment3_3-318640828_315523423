@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-modal id="modal-add-recipe" title="Create New Recipe" @ok="createRecipe">
-      <form @submit.prevent="createRecipe">
+    <!-- <b-modal id="modal-add-recipe" title="Create New Recipe" @ok="createRecipe"> -->
+      <form @submit.prevent="AddRecipeToDatabase">
         <label for="recipe_id">recipe_id</label>
         <input type="text" id="recipe_id" v-model="recipe.recipe_id" required>
 
@@ -38,7 +38,7 @@
 
         <button type="submit">Create Recipe</button>
       </form>
-    </b-modal>
+    <!-- </b-modal> -->
   </div>
 </template>
 
@@ -111,7 +111,37 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide('modal-prevent-closing')
       })
-    }
+    },
+    async AddRecipeToDatabase() {
+      try {
+        const response = await this.axios.post(
+          this.$root.store.server_domain + "/users/MyRecipes",
+          {
+            recipe_id: this.recipe.recipe_id,
+            title: this.recipe.title,
+            image: this.recipe.imageUrl,
+            readyInMinutes: this.recipe.readyInMinutes,
+            popularity: this.recipe.popularity,
+            vegetarian: this.recipe.vegetarian,
+            vegan: this.recipe.vegan,
+            glutenFree: this.recipe.glutenFree,
+            IngredientsAndAmount: this.recipe.ingredientsAndAmount,
+            instructions: this.recipe.instructions,
+            servings: this.recipe.servings
+          },
+          { withCredentials: true }
+        );
+      //create alert that recipe was added successfully
+      alert("Recipe added successfully!");
+      //close the modal when I click on ok
+      this.$emit("formSubmitted")
+    
+      } catch (err) {
+        this.reset();
+        alert("There is a problem with the recipe's data");
+        
+      }
+    },
   },
 };
 </script>

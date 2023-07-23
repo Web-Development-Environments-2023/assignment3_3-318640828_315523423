@@ -17,7 +17,7 @@
       };
     },
     mounted() {
-      this.updateRecipes();
+      //this.updateRecipes();
     },
     name: "FamilyPreviewList",
     components: {

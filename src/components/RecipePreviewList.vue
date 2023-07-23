@@ -1,9 +1,5 @@
 <template>
   <b-container>
-    <!-- <h3>
-      {{ title }}:
-      <slot></slot>
-    </h3> -->
     <div class="recipe-list">
       <RecipePreview v-for="r in recipes" :key="r.id" class="recipe-item" :recipe="r"
       />
